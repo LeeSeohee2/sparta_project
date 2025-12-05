@@ -1,0 +1,107 @@
+/* src/components/Modal.css (디자인 디테일 강화 버전) */
+
+/* -------------------------------------- */
+/* 1. 공통 모달 스타일 */
+/* -------------------------------------- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* 로그인 이미지 배경색 (#e5f0f8 계열의 연한 하늘색) */
+    background-color: #e9f2fb; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    /* 모달의 부드러운 그림자 (이미지와 유사하게 연하게 조정) */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); 
+    position: relative;
+    text-align: center;
+}
+/* ... (close-btn, inquiry-modal, char-count 등 나머지 스타일은 이전과 동일) ... */
+
+
+/* -------------------------------------- */
+/* 2. 로그인 모달 (디자인 재현) 스타일 */
+/* -------------------------------------- */
+.login-modal {
+    padding: 40px;
+}
+.login-header {
+    margin-bottom: 25px;
+}
+.chat-icon {
+    font-size: 2.5em;
+    color: #007bff; 
+    display: block;
+    margin-bottom: 10px;
+}
+.login-modal h1 {
+    font-size: 1.8em;
+    color: #333;
+    margin: 0;
+    font-weight: 500; /* 일반적인 폰트 굵기 */
+}
+
+.login-modal input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 1em;
+}
+
+.login-links {
+    margin-top: 15px;
+    font-size: 0.9em;
+    color: #666;
+}
+.login-links a {
+    color: #333; /* 링크 색상을 어둡게 조정 */
+    text-decoration: none;
+    margin: 0 5px;
+    /* **[수정] 회원가입/비밀번호 찾기 굵게** */
+    font-weight: bold; 
+}
+.login-links span {
+    margin-right: 5px;
+    font-weight: normal;
+}
+
+
+/* -------------------------------------- */
+/* 4. 공통 버튼 스타일 */
+/* -------------------------------------- */
+
+/* **그라데이션 버튼 (로그인 버튼) 스타일** */
+.btn-login-gradient {
+    width: 100%;
+    /* 이미지에 사용된 청록색 그라데이션 (색상값을 더 유사하게 조정) */
+    background: linear-gradient(to right, #00C6FF, #0072FF); 
+    /* 원본 이미지는 진한 청록/파랑 계열이었습니다. */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: opacity 0.2s;
+}
+
+.btn-login-gradient:hover {
+    opacity: 0.9;
+}

@@ -1,0 +1,147 @@
+
+.chat-room-container {
+    max-width: 480px;
+    height: 100vh;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    background-color: #f7f9fb; /* 연한 배경색 */
+}
+
+/* 1. 헤더 (ChatList와 디자인 통일) */
+.chat-header-gradient {
+    /* 청록색 그라데이션 */
+    background: linear-gradient(to right, #00C6FF, #0072FF);
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.back-button {
+    font-size: 1.5em;
+    cursor: pointer;
+    margin-right: 15px;
+    font-weight: 300;
+}
+
+.header-info {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    font-size: 1.1em;
+    font-weight: 500;
+}
+
+.chat-avatar-small {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #ffffff30; /* 투명한 흰색 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.9em;
+    margin-right: 10px;
+}
+
+.opponent-name {
+    margin: 0;
+}
+
+.header-icons-right {
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+
+/* 2. 메시지 영역 */
+.messages-area {
+    flex-grow: 1;
+    padding: 10px 15px;
+    overflow-y: auto;
+}
+
+.message-bubble {
+    display: flex;
+    flex-direction: column;
+    max-width: 75%;
+    margin: 8px 0;
+    font-size: 0.95em;
+}
+
+.message-content {
+    padding: 10px 15px;
+    border-radius: 18px;
+    word-wrap: break-word;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.message-time {
+    font-size: 0.75em;
+    color: #999;
+    margin-top: 2px;
+}
+
+/* 상대방 메시지 */
+.message-bubble.opponent {
+    align-self: flex-start;
+}
+.message-bubble.opponent .message-content {
+    background-color: white;
+    color: #333;
+    border-top-left-radius: 5px; /* 왼쪽 상단은 덜 둥글게 */
+}
+.message-bubble.opponent .message-time {
+    text-align: left;
+    margin-left: 10px;
+}
+
+
+/* 내 메시지 */
+.message-bubble.me {
+    align-self: flex-end;
+}
+.message-bubble.me .message-content {
+    /* 청록색 그라데이션을 반대로 사용하여 강조 */
+    background: linear-gradient(to left, #00C6FF, #0072FF); 
+    color: white;
+    border-top-right-radius: 5px; /* 오른쪽 상단은 덜 둥글게 */
+}
+.message-bubble.me .message-time {
+    text-align: right;
+    margin-right: 10px;
+}
+
+
+/* 3. 입력 영역 */
+.input-area {
+    display: flex;
+    padding: 10px 15px;
+    background-color: white;
+    border-top: 1px solid #eee;
+    align-items: center;
+}
+
+.input-area input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    margin-right: 10px;
+    font-size: 1em;
+}
+
+.send-button {
+    background: linear-gradient(to right, #00C6FF, #0072FF);
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.2em;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
