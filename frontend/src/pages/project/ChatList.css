@@ -117,3 +117,31 @@
     color: #007bff;
     font-weight: bold;
 }
+.badge-unread {
+    background-color: #ff3b30;
+    color: white;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    display: inline-block;
+    min-width: 20px;
+    text-align: center;
+}
+.chat-room-btn {
+    display: block;
+    width: 90%;
+    margin: 15px auto;
+    padding: 12px 0;
+    background-color: #4e8cff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.chat-room-btn:hover {
+    background-color: #3b6edc;
+}

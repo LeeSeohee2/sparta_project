@@ -7,7 +7,7 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-
+import axiosInstance from "../../api/axiosInstance";
 import SockJS from "sockjs-client/dist/sockjs";
 import { Client } from "@stomp/stompjs";
 import './ChatRoom.css';
@@ -94,18 +94,24 @@ function ChatRoom() {
 
     // 3) 메시지 전송 ---------------------------------------------------------------
     const handleSendMessage = (e) => {
+        const token = localStorage.getItem("accessToken");
+        const userId = localStorage.getItem("userId");
         e.preventDefault();
         if (!message.trim()) return;
 
         const msgPayload = {
             roomId: Number(roomId),
             content: message,
+            senderId: userId, 
             type: "TEXT"
         };
 
         stompClientRef.current.publish({
             destination: "/pub/chat/send",
-            body: JSON.stringify(msgPayload)
+            body: JSON.stringify(msgPayload),
+            headers: {
+            Authorization: `Bearer ${token}`
+    }
         });
 
         setMessage("");

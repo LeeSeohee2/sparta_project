@@ -23,9 +23,10 @@ function LoginModal() {
         try {
             const response = await axios.post("http://localhost:8080/api/auth/login", requestBody);
             
+            console.log("ㅇㅇ",response);
             const { accessToken } = response.data;
             localStorage.setItem("accessToken", accessToken);
-
+            localStorage.setItem("userId", response.data.userId);
             alert("로그인 성공! 토큰이 저장되었으며 상품 목록 페이지로 이동합니다.");
 
             // 4. ★ 수정: 상품 목록 페이지 (/list)로 이동
@@ -38,7 +39,7 @@ function LoginModal() {
     };
     
     return (
-        // ... (나머지 UI 코드는 그대로 유지) ...
+
         <div className="modal-overlay"> 
             <form className="modal-content login-modal" onSubmit={handleLogin}>
                 <div className="login-header">

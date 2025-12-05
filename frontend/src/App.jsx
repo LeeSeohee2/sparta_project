@@ -10,6 +10,7 @@ import SignupModal from "./pages/project/SignupModal"
 import ChatList from "./pages/project/ChatList"; 
 import ChatRoom from './pages/project/ChatRoom'; 
 import ProductDetail from './pages/project/ProductDetail';
+import ChatRooms from './pages/project/ChatRooms';
 
 
 function App() {
@@ -36,7 +37,7 @@ function App() {
                 path="/chat/:roomId" 
                 element={<ChatRoom />}
             />
-
+            <Route path="/rooms" element={<ChatRooms />} />
             {/* 5. 기타 경로 처리 */}
             <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

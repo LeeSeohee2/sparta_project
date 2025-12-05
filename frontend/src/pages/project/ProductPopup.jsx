@@ -21,7 +21,7 @@ function ProductPopup() {
         
         // 채팅 목록 페이지로 이동
         navigate("/list");
-    };S
+    };
     
     // 2. 임시 건너뛰기 버튼 (바로 채팅 목록으로 이동)
     const handleSkip = () => {
