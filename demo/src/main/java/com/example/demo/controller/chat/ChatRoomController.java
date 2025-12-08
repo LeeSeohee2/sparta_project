@@ -6,6 +6,7 @@ import com.example.demo.dto.chat.InquiryCreateRequest;
 import com.example.demo.service.chat.ChatRoomService;       // 서비스 import
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,4 +46,15 @@ public class ChatRoomController {
 
         return ResponseEntity.ok().build();                 // 바디 없이 200 OK 만 반환
     }
+    /** =========================
+     *   3) 전체 unreadCount 반환 API
+     * ========================= */
+    @GetMapping("/chatrooms/unread/total")
+    public ResponseEntity<Long> getTotalUnread() {
+        Long total = chatRoomService.getTotalUnreadForCurrentUser();
+        return ResponseEntity.ok(total);
+    }
+
+
+
 }

@@ -55,9 +55,9 @@ public class AuthService {
         }
 
         String token = jwtTokenProvider.createToken(
-                user.getUser_id(), user.getEmail(), user.getRole());
+                user.getUserId(), user.getEmail(), user.getRole());
         // JWT 생성
 
-        return new LoginResponse(token);             // 로그인 성공 응답(JSON)
+        return new LoginResponse(token,user.getUserId());             // 로그인 성공 응답(JSON)
     }
 }

@@ -25,7 +25,7 @@ public class ChatRoomParticipant {
     private ChatRoom room;                                // 어떤 상담방인지
 
     @ManyToOne(fetch = FetchType.LAZY)                    // 다대일: 여러 참여자가 한 사용자일 수 있음
-    @JoinColumn(name = "user_id")                         // user_id FK 컬럼
+    @JoinColumn(name = "userId")                          // user_id FK 컬럼
     private Users user;                                   // 어떤 사용자인지
 
     @Column(nullable = false)                             // null 불가

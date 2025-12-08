@@ -13,10 +13,11 @@ public class LoginResponse {
 
     private String accessToken;    // JWT Access Token 반환
     private String tokenType = "Bearer";
+    private Long userId;
 
-
-    public LoginResponse(String accessToken) {
+    public LoginResponse(String accessToken,Long userId) {
         this.accessToken = accessToken;
         this.tokenType = "Bearer";
+        this.userId = userId;
     }
 }

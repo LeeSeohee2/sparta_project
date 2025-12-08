@@ -3,6 +3,7 @@ package com.example.demo.repository.chat;                      // 채팅 레포�
 import com.example.demo.domain.chat.ChatMessage;               // 메시지 엔티티 import
 import com.example.demo.domain.chat.ChatRoom;                  // 채팅방 엔티티 import
 import org.springframework.data.jpa.repository.JpaRepository;  // JPA 레포지토리 기본 인터페이스
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,4 +29,21 @@ public interface ChatMessageRepository
 
     // 특정 방에서, 기준 메시지 ID보다 큰(= 아직 안 읽은) 메시지 개수 조회
     long countByRoomAndIdGreaterThan(ChatRoom room, Long lastReadMessageId);
+
+
+    @Query("select max(m.id) from ChatMessage m where m.room = :room")
+    Long findLatestMessageId(ChatRoom room);
+
+    @Query("""
+        select count(m)
+        from ChatMessage m
+        where m.room = :room
+          and m.id > :lastReadMessageId
+          and m.sender.id <> :userId
+    """)
+    Long countUnreadMessages(ChatRoom room, Long lastReadMessageId, Long userId);
+
+
+
+
 }

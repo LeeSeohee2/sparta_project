@@ -21,7 +21,7 @@ public class ChatMessageResponse {
         return ChatMessageResponse.builder()
                 .messageId(m.getId())
                 .roomId(m.getRoom().getId())
-                .senderId(m.getSender().getUser_id())
+                .senderId(m.getSender().getUserId())
                 .senderName(m.getSender().getName())
                 .content(m.getContent())
                 .type(m.getType())

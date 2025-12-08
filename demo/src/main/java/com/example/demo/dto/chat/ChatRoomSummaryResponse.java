@@ -1,16 +1,73 @@
+
 package com.example.demo.dto.chat;
 
-
+import com.example.demo.domain.chat.ChatRoom;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-
-@Getter                                          // 필드에 대한 getter 생성
-@Builder                                         // 빌더 패턴으로 객체 생성 가능
+@Getter
+@AllArgsConstructor
+@Builder
 public class ChatRoomSummaryResponse {
 
-    private Long roomId;                         // 상담방 ID
-    private String productName;                  // 상품 이름
-    private String lastMessage;                  // 최근 메시지 내용
-    private String status;                       // 상담 상태(OPEN / ASSIGNED / CLOSED)
-    private Long unreadCount;                    // 안 읽은 메시지 수(추후 ReadState 연동 시 사용)
+    private Long roomId;
+    private String productName;  // ★ 프론트에서 사용하는 실제 값
+
+    private String lastMessage;
+    private String lastMessageTime;
+
+    private Long unreadCount;
+
+    public static ChatRoomSummaryResponse from(
+            ChatRoom room,
+            String lastMsg,
+            Long unreadCount,
+            String lastTime
+    ) {
+        return ChatRoomSummaryResponse.builder()
+                .roomId(room.getId())
+                .productName(room.getProduct().getName())   // ★ 이렇게 수정
+                .lastMessage(lastMsg)
+                .lastMessageTime(lastTime)
+                .unreadCount(unreadCount)
+                .build();
+    }
 }
+
+
+
+//package com.example.demo.dto.chat;
+//
+//import com.example.demo.domain.chat.ChatRoom;
+//import lombok.AllArgsConstructor;
+//import lombok.Builder;
+//import lombok.Getter;
+//
+//@Getter
+//@AllArgsConstructor
+//@Builder
+//public class ChatRoomSummaryResponse {
+//
+//    private Long roomId;
+//    private Long productId;
+//
+//    private String lastMessage;
+//    private String lastMessageTime;
+//
+//    private Long unreadCount;
+//
+//    public static ChatRoomSummaryResponse from(
+//            ChatRoom room,
+//            String lastMsg,
+//            Long unreadCount,
+//            String lastTime
+//    ) {
+//        return ChatRoomSummaryResponse.builder()
+//                .roomId(room.getId())
+//                .productId(room.getProductId())
+//                .lastMessage(lastMsg)
+//                .lastMessageTime(lastTime)
+//                .unreadCount(unreadCount)
+//                .build();
+//    }
+////}

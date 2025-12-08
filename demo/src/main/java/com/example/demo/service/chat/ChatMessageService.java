@@ -52,14 +52,11 @@ public class ChatMessageService {
         List<ChatMessage> entities;
 
         if (cursor == null) {
-            // 최신 50개 조회
             entities = chatMessageRepository.findTop50ByRoomOrderByIdDesc(room);
         } else {
-            // cursor 이전 메시지 조회
             entities = chatMessageRepository.findTop50ByRoomAndIdLessThanOrderByIdDesc(room, cursor);
         }
 
-        // 내림차순 조회 → 오래된 순으로 뒤집기
         Collections.reverse(entities);
 
         List<ChatMessageResponse> dtos = entities.stream()
@@ -70,27 +67,38 @@ public class ChatMessageService {
         if (!entities.isEmpty()) {
             Long minId = entities.get(0).getId();
             boolean hasMore = chatMessageRepository.existsByRoomAndIdLessThan(room, minId);
-
             if (hasMore) nextCursor = minId;
         }
 
+
+        // ⭐⭐⭐ [추가됨] 현재 사용자의 unreadCount 계산 ⭐⭐⭐
+        Long lastReadId = readStateRepository.findByRoomIdAndUserId(roomId, currentUserId)
+                .map(ReadState::getLastReadMessageId)
+                .orElse(0L);
+
+        long unreadCount = chatMessageRepository.countByRoomAndIdGreaterThan(room, lastReadId);
+
+        // ⭐⭐⭐ PageResponse 에 unreadCount 추가하려면 DTO 수정 필요 ⭐⭐⭐
         return ChatMessagePageResponse.builder()
                 .messages(dtos)
                 .nextCursor(nextCursor)
+                .unreadCount(unreadCount)        // ← 추가됨
                 .build();
     }
 
 
+    // ================================
     // DTO 변환 메서드
+    // ================================
     private ChatMessageResponse toResponse(ChatMessage message,
                                            Long currentUserId) {
 
-        boolean mine = message.getSender().getUser_id().equals(currentUserId);
+        boolean mine = message.getSender().getUserId().equals(currentUserId);
 
         return ChatMessageResponse.builder()
                 .messageId(message.getId())
                 .roomId(message.getRoom().getId())
-                .senderId(message.getSender().getUser_id())
+                .senderId(message.getSender().getUserId())
                 .senderName(message.getSender().getName())
                 .content(message.getContent())
                 .type(message.getType())
@@ -112,7 +120,6 @@ public class ChatMessageService {
         Users sender = userRepository.findById(request.getSenderId())
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
-        // 엔티티 생성
         ChatMessage message = ChatMessage.builder()
                 .room(room)
                 .sender(sender)
@@ -120,14 +127,17 @@ public class ChatMessageService {
                 .type(request.getType())
                 .build();
 
-        // DB 저장
         ChatMessage saved = chatMessageRepository.save(message);
 
-        // Redis 브로드캐스트할 DTO 생성
+
+        // ⭐⭐⭐ [추가됨] 새 메시지가 오면 “상대방 unreadCount 증가 효과”
+        updateUnreadForOtherParticipants(room.getId(), sender.getUserId(), saved.getId());
+
+
         ChatMessageResponse response = ChatMessageResponse.builder()
                 .messageId(saved.getId())
                 .roomId(room.getId())
-                .senderId(sender.getUser_id())
+                .senderId(sender.getUserId())
                 .senderName(sender.getName())
                 .content(saved.getContent())
                 .type(saved.getType())
@@ -135,12 +145,25 @@ public class ChatMessageService {
                 .mine(false)
                 .build();
 
-        // Redis 발행 (Subscriber 통해 브로드캐스트)
         redisPublisher.publish(response);
 
         return response;
     }
 
+
+    // ⭐⭐⭐ 신규 메시지 도착 → 상대방 unreadCount 증가 처리 ⭐⭐⭐
+    private void updateUnreadForOtherParticipants(Long roomId, Long senderId, Long newMessageId) {
+
+        // 자신(sender)의 ReadState 는 건드리지 않음
+        List<ReadState> states = readStateRepository.findByRoomId(roomId);
+
+        for (ReadState state : states) {
+            if (!state.getUserId().equals(senderId)) {
+                // 상대방의 lastReadMessageId 는 그대로 → unreadCount 자연 증가
+                // 저장 필요 없음 (ReadState 자체는 그대로 유지)
+            }
+        }
+    }
 
 
     // ================================
@@ -153,7 +176,9 @@ public class ChatMessageService {
                 .findByRoomIdAndUserId(roomId, userId)
                 .orElseGet(() -> new ReadState(roomId, userId, 0L));
 
+        // ⭐⭐⭐ 사용자가 메시지를 읽으면 마지막 읽은 위치 업데이트! ⭐⭐⭐
         state.updateLastReadMessage(lastReadMessageId);
+
         readStateRepository.save(state);
     }
 }

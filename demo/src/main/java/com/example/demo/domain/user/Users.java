@@ -19,7 +19,8 @@ public class Users {
     @Id                      // 기본키(PK)임을 선언
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     // MySQL AUTO_INCREMENT 방식으로 PK 생성
-    private Long user_id;    // 사용자 고유 ID (users.user_id 컬럼 매핑)
+    @Column(name = "user_id")
+    private Long userId;    // 사용자 고유 ID (users.user_id 컬럼 매핑)
 
     @Column(nullable = false, unique = true)
     // null 불가 + 중복 불가 (이메일은 유일해야 함)

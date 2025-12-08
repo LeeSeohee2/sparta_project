@@ -17,12 +17,11 @@ public class StompChatController {
 
     private final ChatMessageService chatMessageService;    // 메시지 저장 + Redis 발행을 담당하는 서비스
 
-    @MessageMapping("/chat/message")                        // 클라이언트가 /pub/chat/message 로 send 하면 이 메서드가 호출됨
+    @MessageMapping("/chat/send")                        // 클라이언트가 /pub/chat/message 로 send 하면 이 메서드가 호출됨
     public void handleChatMessage(@Payload ChatMessageRequest request,
                                   SimpMessageHeaderAccessor headerAccessor) {
         // @Payload: STOMP 메시지 바디(JSON)를 ChatMessageRequest 로 자동 매핑
         // headerAccessor: 필요할 경우 헤더에서 JWT, 세션 정보 등을 꺼낼 때 사용
-
         log.info("Received STOMP message: roomId={}, content={}",
                 request.getRoomId(), request.getContent()); // 디버깅용 로그 출력
 
